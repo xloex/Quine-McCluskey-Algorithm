@@ -15,6 +15,7 @@ struct mintermino{
     string estructuraMintermino;
     string expresionBooleana;
     bool uso;
+    static int NUMERO_MINTERMINOS;
 };
 
 
@@ -191,7 +192,7 @@ int main() {
 
     //construccion de la tabla, los datos de los if dependen del numero de datos, a su vez, almacenando los 
     //elementos que no hayan sido usados durante las combinaciones mediante una pila
-    stack<mintermino> minterminosNoUsados;
+    vector<mintermino> minterminosNoUsados;
     bool element=false;     //tracking si hubo elementos en la ultima iteración
 
     cout<<"\n====================================================================================================\n\n    Tabla de combinaciones\n"<<endl;
@@ -210,7 +211,7 @@ int main() {
             string mparenthesis="";
             formacionTabla[i].pop();
             
-            if(!minterm.uso) {mparenthesis.push_back('*'); minterminosNoUsados.push(minterm);}
+            if(!minterm.uso) {mparenthesis.push_back('*'); minterminosNoUsados.push_back(minterm);}
 
             mparenthesis+="m("+minterm.estructuraMintermino+") -> "+minterm.formaBinaria;
             cout<<setw(20+NUM_BITS)<<left<<mparenthesis;
@@ -220,23 +221,29 @@ int main() {
     }
     cout<<"\n    * : Elementos no utilizados durante las combinaciones\n\n===================================================================================================="<<endl;
 
-    cout<<"\n    Formacion de los minterminos\n"<<endl;
+    cout<<"\n    Tabla inicial formacion de minterminos no utilizados   \n"<<endl;
     
     
-    int NUM_MINTERMINOS_FINAL=minterminosNoUsados.size(); //Metrica para la construcción de la tabla
-    vector<vector<int>> tablaExpresionesFinales(NUM_MINTERMINOS_FINAL, vector<int>(NUMERO_MINTERMINOS));    //1 representa una X, 0 representa un espacio vacio
 
-    //Construcción del encabezado de la tabla
+
+
+    int NUM_MINTERMINOS_FINAL=minterminosNoUsados.size(); //Metrica para la construcción de la tabla
+    vector<vector<int>> tablaExpresionesFinales(NUM_MINTERMINOS_FINAL+1, vector<int>(NUMERO_MINTERMINOS));    //1 representa una X, 0 representa un espacio vacio
+    //Formación del encabezado de la tabla (variable)
+    for(int i=0; i<NUMERO_MINTERMINOS+1; i++){
+        tablaExpresionesFinales[0][i]=minterminos[i];
+    }
+
+    //Construcción del encabezado de la tabla (imagen)
     for(int i=-1; i<=NUMERO_MINTERMINOS; i++){
         if(i==-1) {cout<<setw(4)<<left<<""<<setw(15)<<left<<"Mintermino"; continue;}
         if(i==NUMERO_MINTERMINOS) {cout<<setw(18)<<left<<"Expresion booleana"<<endl; continue;}
         cout<<setw(4)<<left<<minterminos[i];
     }
-    //+2 ya que consideramos la expresion booleana y la escritura del mintermino
-    for(int j=0; j<NUM_MINTERMINOS_FINAL; j++){
+
+    for(int j=1; j<=NUM_MINTERMINOS_FINAL; j++){
         
-        mintermino minterm=minterminosNoUsados.top();
-        minterminosNoUsados.pop();
+        mintermino minterm=minterminosNoUsados[NUM_MINTERMINOS_FINAL-j];
         unordered_map<int,int> minterminosInt;
 
         string numStr="";
@@ -266,8 +273,57 @@ int main() {
                 continue;
             }
 
-            if(minterminosInt[minterminos[i]]==1) cout<<setw(4)<<left<<"X";
-            else cout<<setw(4)<<left<<"";
+            if(minterminosInt[minterminos[i]]==1){
+                cout<<setw(4)<<left<<"X";
+                tablaExpresionesFinales[j][i]=1;
+            }else {
+                cout<<setw(4)<<left<<"";
+                tablaExpresionesFinales[j][i]=1;
+            }
+        }
+    }
+
+
+    //===== Construccion de la tabla por cada iteración ======
+    bool minterminosTablaVisitados[NUMERO_MINTERMINOS]={};
+    int totalElementsVisted=0;
+    int iteracion=1;
+
+    while(totalElementsVisted!=NUMERO_MINTERMINOS){
+        cout<<"\n\n===================================================================================================="<<endl;
+        cout<<"\n    Iteración"<<iteracion<<endl;
+        //Construcción del encabezado de la tabla (imagen)
+        for(int i=-1; i<=NUMERO_MINTERMINOS; i++){
+            if(i==-1) {cout<<setw(4)<<left<<""<<setw(15)<<left<<"Mintermino"; continue;}
+            if(i==NUMERO_MINTERMINOS) {cout<<setw(18)<<left<<"Expresion booleana"<<endl; continue;}
+            cout<<setw(4)<<left<<minterminos[i];
+        }
+
+        for(int j=1; j<=NUM_MINTERMINOS_FINAL; j++){
+            
+            mintermino minterm=minterminosNoUsados[NUM_MINTERMINOS_FINAL-j];
+
+            //Identificación del mintérmino que utilizaremos en la iteración kesima
+
+            for(int i=-1; i<=NUMERO_MINTERMINOS; i++){
+                if(i==-1){
+                    string mparenthesis="m("+minterm.estructuraMintermino+")";
+                    cout<<setw(4)<<left<<""<<setw(15)<<left<<mparenthesis;
+                    continue;
+                }
+                if(i==NUMERO_MINTERMINOS){
+                    cout<<setw(18)<<left<<minterm.expresionBooleana<<endl;
+                    continue;
+                }
+
+                if(minterminosInt[minterminos[i]]==1){
+                    cout<<setw(4)<<left<<"X";
+                    tablaExpresionesFinales[j][i]=1;
+                }else {
+                    cout<<setw(4)<<left<<"";
+                    tablaExpresionesFinales[j][i]=1;
+                }
+            }
         }
     }
 }
