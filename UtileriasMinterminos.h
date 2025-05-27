@@ -24,7 +24,7 @@ int lecturaMinterminos(int&, std::vector<int>&);
  * de los mintérminos, contieniendo TODA la información necesaria
  * @return Retorna el número de bits con los cuales se formaron los minterminos binarios
  */
-int formacionMinterminos(int, std::vector<int>&, std::vector<std::string>& , std::vector<std::vector<std::vector<mintermino>>>&);
+int formacionMinterminos(int, std::vector<int>&, std::vector<std::string>& , std::vector<std::vector<mintermino>>&);
 
 
 /**
@@ -34,7 +34,7 @@ int formacionMinterminos(int, std::vector<int>&, std::vector<std::string>& , std
  * @param clasificacionGlobalMinterminos Vector referencia en el que almacenaremos toda la información
  * @return Devuelve el número total de clumnas que se generaron al hacer todas las posibles combinaciones
  */
-int clasificacionMinterminos(int, std::vector<std::vector<std::vector<mintermino>>>&);
+int clasificacionMinterminos(int, std::vector<std::vector<mintermino>>&);
 
 /**
  * Funcion mediante la cual vamos a imprimir en la terminal toda la información generada en las combinaciones.
@@ -43,7 +43,7 @@ int clasificacionMinterminos(int, std::vector<std::vector<std::vector<mintermino
  * @param clasificacionGlobalMinterminos Tabla con la información de las combinaciones realizadas en otra función
  * @return Retorna un vector con todos los minterminos que no se utilizaron en la construcción de las combinaciones
  */
-std::vector<mintermino> impresionTablaMinterminosTotales(const int, const int, std::vector<std::vector<std::vector<mintermino>>>&);
+std::vector<mintermino> impresionTablaMinterminosTotales(const int, const int, std::vector<std::vector<mintermino>>&);
 
 
 /**

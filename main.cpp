@@ -15,13 +15,9 @@ int main() {
      *Vector que almacena la clasificación de los mintérminos, en la primera pocision es el número de bits encendidos que tiene el mintermino
      *el par exterior en su primera posicion tiene otro par con la información del número en bits y en la segunda pocision tenemos el número 
      *del cual surgió el número binario
-     *[iteracionDeLaTabla][clasificacionPorBits][minterminosAlmacenados]
-
-     * IMPORTANTE:
-     * A partir de la iteracion 1, los minterminos seran clasificados de forma creciente con referencia
-     * a la cantidad de bits encendidos sobre el cual se generó la combinación
+     *[iteracionDeLaTabla][minterminosAlmacenados]
      */
-    vector<vector<vector<mintermino>>> clasificacionGlobalMinterminos(50, vector<vector<mintermino>>(30));
+    vector<vector<mintermino>> clasificacionGlobalMinterminos(50);
     vector<int> minterminos;  vector<string> minterminosBinario;
     int NUMERO_MINTERMINOS;
 
