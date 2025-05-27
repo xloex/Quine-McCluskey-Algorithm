@@ -6,7 +6,7 @@
 using namespace std;
 typedef long long ll;
 
-// 0 4 8 5 12 11 7 15
+//  
 // COMPILA DE LA SIGUIENTE FORMA, NECESITAS TENER TODOS LOS ARCHIVOS DEL GITHUB, TODO EN UNA MISMA CARPETA
 // g++ SuperIncreibleProyectoDelVillafan.cpp UtileriasMinterminos.cpp -o programa
 // ./programa
@@ -28,10 +28,10 @@ int main() {
     int NUMERO_MINTERMINOS;
 
     //Lectura de datos y retorno del mintérmino mas grande
-    const int minterminoMaximo=lecturaMinterminos(NUMERO_MINTERMINOS, minterminos);
+    const int MINTERMINO_MAXIMO=lecturaMinterminos(NUMERO_MINTERMINOS, minterminos);
 
     //Formación de los mintérminos completos
-    const int NUM_BITS=formacionMinterminos(minterminoMaximo, minterminos, minterminosBinario, clasificacionGlobalMinterminos);
+    const int NUM_BITS=formacionMinterminos(MINTERMINO_MAXIMO, minterminos, minterminosBinario, clasificacionGlobalMinterminos);
 
     //Llenado de la tabla ClasificacionGlobalMinterminos
     const int NUMERO_COLUMNAS=clasificacionMinterminos(NUM_BITS, clasificacionGlobalMinterminos);
@@ -39,70 +39,24 @@ int main() {
     //Impresion de la tabla con las combinaciones generadas
     vector<mintermino> minterminosNoUsados=impresionTablaMinterminosTotales(NUMERO_COLUMNAS, NUM_BITS, clasificacionGlobalMinterminos);
 
-
-
-    //Impresion de la tabla final con los minterminos no utilizados de la forma vista en clase
-    cout<<"\n    Tabla inicial formacion de minterminos no utilizados   \n"<<endl;
-
-    const int NUM_MINTERMINOS_FINAL=minterminosNoUsados.size(); //Metrica para la construcción de la tabla
+    //Metrica para la construcción de la tabla
+    const int NUM_MINTERMINOS_FINAL=minterminosNoUsados.size(); 
     vector<vector<int>> tablaExpresionesFinales(NUM_MINTERMINOS_FINAL+1, vector<int>(NUMERO_MINTERMINOS));    //1 representa una X, 0 representa un espacio vacio
-    //Formación del encabezado de la tabla (variable)
-    for(int i=0; i<NUMERO_MINTERMINOS+1; i++){
-        tablaExpresionesFinales[0][i]=minterminos[i];
+
+    //Impresion de la tabla final
+    impresionTablaMinterminosFinal(minterminosNoUsados, tablaExpresionesFinales, minterminos);
+    
+
+    //Simplificación de la tabla final para obtener la expresión más simple
+    vector<int> indices = simplificacionTablaFinal(tablaExpresionesFinales, NUMERO_MINTERMINOS, minterminosNoUsados);
+
+    //Impresion de la expresion booleana final
+    cout<<"\n====================================================================================================    \n\n    Expresion booleana final:";
+    cout<<"  ";
+    for(int i=0; i<indices.size(); i++){
+        cout<<minterminosNoUsados[indices[i]].expresionBooleana;
+        if(i!=indices.size()-1) cout<<" + ";
     }
-
-    //Construcción del encabezado de la tabla (imagen)
-    for(int i=-1; i<=NUMERO_MINTERMINOS; i++){
-        if(i==-1) {cout<<setw(4)<<left<<""<<setw(15)<<left<<"Mintermino"; continue;}
-        if(i==NUMERO_MINTERMINOS) {cout<<setw(18)<<left<<"Expresion booleana"<<endl; continue;}
-        cout<<setw(4)<<left<<minterminos[i];
-    }
-
-    for(int j=1; j<=NUM_MINTERMINOS_FINAL; j++){
-        
-        mintermino minterm=minterminosNoUsados[NUM_MINTERMINOS_FINAL-j];
-        unordered_map<int,int> minterminosInt;
-
-        string numStr="";
-        for(int i=0; i<=minterm.estructuraMintermino.size(); i++){
-            if(i==minterm.estructuraMintermino.size()){
-                int numInt=stoi(numStr);
-                minterminosInt[numInt]=1;
-                continue;
-            }
-            if(minterm.estructuraMintermino[i]==','){
-                int numInt=stoi(numStr);
-                minterminosInt[numInt]=1;
-                numStr="";
-                continue;
-            }
-            numStr.push_back(minterm.estructuraMintermino[i]);
-        }
-
-        for(int i=-1; i<=NUMERO_MINTERMINOS; i++){
-            if(i==-1){
-                string mparenthesis="m("+minterm.estructuraMintermino+")";
-                cout<<setw(4)<<left<<""<<setw(15)<<left<<mparenthesis;
-                continue;
-            }
-            if(i==NUMERO_MINTERMINOS){
-                cout<<setw(18)<<left<<minterm.expresionBooleana<<endl;
-                continue;
-            }
-
-            if(minterminosInt[minterminos[i]]==1){
-                cout<<setw(4)<<left<<"X";
-                tablaExpresionesFinales[j][i]=1;
-            }else {
-                cout<<setw(4)<<left<<"";
-                tablaExpresionesFinales[j][i]=1;
-            }
-        }
-    }
-
-
-    //===== Construccion de la tabla por cada iteración ======
-    // bool minterminosTablaVisitados[NUMERO_MINTERMINOS]={};
-    // int totalElementsVisted=0;
-    // int iteracion=1;
+    cout<<endl;
+    return 0;
 }
