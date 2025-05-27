@@ -51,6 +51,6 @@ int main() {
         cout<<minterminosNoUsados[indices[i]].expresionBooleana;
         if(i!=indices.size()-1) cout<<" + ";
     }
-    cout<<endl;
+    cout<<" \n"<<endl;
     return 0;
 }

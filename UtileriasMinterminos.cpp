@@ -54,12 +54,11 @@ int formacionMinterminos(int MINTERMINO_MAXIMO, vector<int> &minterminos, vector
      * almacenados en la iteracion 0 de la tabla y clasificados en su correspondiente cantidad de bits
     */
     for(string mintermBits:minterminosBinario){
-        int cantidadBitsPrendidos=count(mintermBits.begin(), mintermBits.end(), '1');
         
         string expresionBool="";
         for(int i=0; i<NUM_BITS; i++){
-            if(mintermBits[i]=='0') {expresionBool.push_back((char)('z'-NUM_BITS+(i+1))); expresionBool.push_back('\'');}
-            else expresionBool.push_back((char)('z'-NUM_BITS+(i+1)));
+            expresionBool.push_back((char)('z'-NUM_BITS+(i+1)));
+            if(mintermBits[i]=='0') expresionBool.push_back('\'');
         }
 
         //Declaración mintérmino
@@ -151,7 +150,7 @@ vector<mintermino> impresionTablaMinterminosTotales(int NUMERO_COLUMNAS, int NUM
     bool element;
 
     cout<<"\n====================================================================================================\n\n    Tabla de combinaciones\n"<<endl;
-    for(int i=0; i<30; i++){
+    for(int i=0; i<50; i++){
         
         element=false;
 
@@ -162,11 +161,11 @@ vector<mintermino> impresionTablaMinterminosTotales(int NUMERO_COLUMNAS, int NUM
                 continue;
             }
             if(clasificacionGlobalMinterminos[j].empty()) break;
-            if(clasificacionGlobalMinterminos[j].size()<=i) continue;
+            if(i-1>=clasificacionGlobalMinterminos[j].size()) continue;
 
             if(j==0) cout<<setw(4)<<left<<"";
 
-            mintermino minterm=clasificacionGlobalMinterminos[j][i];
+            mintermino minterm=clasificacionGlobalMinterminos[j][i-1];
             string mparenthesis="";
             element=true;
             
