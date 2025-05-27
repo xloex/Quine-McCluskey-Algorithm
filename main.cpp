@@ -6,9 +6,7 @@
 using namespace std;
 typedef long long ll;
 
-//  
-// COMPILA DE LA SIGUIENTE FORMA, NECESITAS TENER TODOS LOS ARCHIVOS DEL GITHUB, TODO EN UNA MISMA CARPETA
-// g++ SuperIncreibleProyectoDelVillafan.cpp UtileriasMinterminos.cpp -o programa
+// g++ main.cpp UtileriasMinterminos.cpp -o programa
 // ./programa
 
 int main() {
