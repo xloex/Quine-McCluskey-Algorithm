@@ -27,13 +27,13 @@ int lecturaMinterminos(int &NUMERO_MINTERMINOS, vector<int> &minterminos){
 
 
 
-int formacionMinterminos(int MAXIMO, vector<int> &minterminos, vector<string> &minterminosBinario ,vector<vector<vector<mintermino>>> &clasificacionGlobalMinterminos){
+int formacionMinterminos(int MINTERMINO_MAXIMO, vector<int> &minterminos, vector<string> &minterminosBinario, vector<vector<vector<mintermino>>> &clasificacionGlobalMinterminos){
     
     //Mediante el valor más grande, definimos el número de bits que vamos a necesitar
     int NUM_BITS=0;
-    while(MAXIMO){
+    while(MINTERMINO_MAXIMO){
         NUM_BITS++;
-        MAXIMO>>=1;
+        MINTERMINO_MAXIMO>>=1;
     }
 
     //Transformamos los mintérminos a binario y los almacenamos
@@ -188,8 +188,8 @@ vector<mintermino> impresionTablaMinterminosTotales(int NUMERO_COLUMNAS, int NUM
         element=false;
         for(int i=0; i<NUMERO_COLUMNAS; i++){
             if(j==0){
-                if(i==0) cout<<setw(4)<<left<<""<<setw(20+NUM_BITS)<<left<<"minterminos";
-                else {string combinacionN="combinacion "+to_string(i); cout<<setw(20+NUM_BITS)<<left<<combinacionN;}
+                if(i==0) cout<<setw(4)<<left<<""<<setw(20+NUM_BITS)<<left<<"Minterminos";
+                else {string combinacionN="Combinacion "+to_string(i); cout<<setw(20+NUM_BITS)<<left<<combinacionN;}
                 continue;
             }
             if(formacionTabla[i].empty()) continue;
@@ -209,4 +209,207 @@ vector<mintermino> impresionTablaMinterminosTotales(int NUMERO_COLUMNAS, int NUM
     }
     cout<<"\n    * : Elementos no utilizados durante las combinaciones\n\n===================================================================================================="<<endl;
     return minterminosNoUsados;
+}
+
+
+void impresionTablaMinterminosFinal(vector<mintermino> &minterminosNoUsados, vector<vector<int>> &tablaExpresionesFinales, vector<int> &minterminos){
+
+    const int NUMERO_MINTERMINOS=minterminos.size();
+    const int NUM_MINTERMINOS_FINAL=minterminosNoUsados.size();
+    
+    //Impresion de la tabla final con los minterminos no utilizados de la forma vista en clase
+    cout<<"\n    Tabla inicial formacion de minterminos no utilizados   \n"<<endl;
+
+    //Formación del encabezado de la tabla (variable)
+    for(int i=0; i<NUMERO_MINTERMINOS; i++){
+        tablaExpresionesFinales[0][i]=minterminos[i];
+    }
+
+    //Construcción del encabezado de la tabla (imagen)
+    for(int i=-1; i<=NUMERO_MINTERMINOS; i++){
+        if(i==-1) {cout<<setw(4)<<left<<""<<setw(15)<<left<<"Mintermino"; continue;}
+        if(i==NUMERO_MINTERMINOS) {cout<<setw(18)<<left<<"Expresion booleana"<<endl; continue;}
+        cout<<setw(4)<<left<<minterminos[i];
+    }
+
+    for(int j=1; j<=NUM_MINTERMINOS_FINAL; j++){
+        
+        mintermino minterm=minterminosNoUsados[j-1];
+        unordered_map<int,int> minterminosInt;
+
+        string numStr="";
+        for(int i=0; i<=minterm.estructuraMintermino.size(); i++){
+            if(i==minterm.estructuraMintermino.size()){
+                int numInt=stoi(numStr);
+                minterminosInt[numInt]=1;
+                continue;
+            }
+            if(minterm.estructuraMintermino[i]==','){
+                int numInt=stoi(numStr);
+                minterminosInt[numInt]=1;
+                numStr="";
+                continue;
+            }
+            numStr.push_back(minterm.estructuraMintermino[i]);
+        }
+
+        for(int i=-1; i<=NUMERO_MINTERMINOS; i++){
+            if(i==-1){
+                string mparenthesis="m("+minterm.estructuraMintermino+")";
+                cout<<setw(4)<<left<<""<<setw(15)<<left<<mparenthesis;
+                continue;
+            }
+            if(i==NUMERO_MINTERMINOS){
+                cout<<setw(18)<<left<<minterm.expresionBooleana<<endl;
+                continue;
+            }
+
+            //si tiene elementos se expresa como un 1, si está vacio se expresa como un 0
+            if(minterminosInt[minterminos[i]]==1){
+                cout<<setw(4)<<left<<"X";
+                tablaExpresionesFinales[j][i]=1;
+            }else {
+                cout<<setw(4)<<left<<"";
+                tablaExpresionesFinales[j][i]=0;
+            }
+        }
+    } 
+}
+
+
+
+
+vector<int> simplificacionTablaFinal(vector<vector<int>>&tablaExpresionesFinales, const int NUMERO_MINTERMINOS, vector<mintermino>&minterminosNoUsados){
+    
+    //Vector que nos indica los minterminos que aún no son expresados
+    vector<bool> minterminosExpresados(NUMERO_MINTERMINOS, false);
+    vector<int> indicesMinterminosMinimos;
+    int numeroMinterminosExpresados=0;
+    const int NUMERO_MINTERMINOS_FINALES=tablaExpresionesFinales.size();
+    
+    
+    stack<int> minterminosUnicos;
+    //Descarte de los mintérminos únicos (solo son expresados por una expresion booleana)
+    for(int i=0; i<NUMERO_MINTERMINOS; i++){
+        
+        int numXsEnColumna=0;
+        int row=0;
+        
+        for(int j=1; j<NUMERO_MINTERMINOS_FINALES; j++){
+            if(tablaExpresionesFinales[j][i]==1){
+                numXsEnColumna++;
+                row=j;
+            }
+        }
+        
+        if(numXsEnColumna==1){
+            minterminosUnicos.push(row);
+        }
+    }
+    
+    while(!minterminosUnicos.empty()){
+        int row=minterminosUnicos.top();
+        minterminosUnicos.pop();
+        
+        //almacenaje de los indices con los mintérminos escenciales
+        indicesMinterminosMinimos.push_back(row-1);
+        //Impresion datos actualizada
+        numeroMinterminosExpresados+=actualizacionImpresionTabla(tablaExpresionesFinales, row, minterminosExpresados, minterminosNoUsados);
+        
+        if(numeroMinterminosExpresados==NUMERO_MINTERMINOS){
+            return indicesMinterminosMinimos;
+        }
+    }
+
+
+    //Descarte final realizado por cantidad máxima de elementos únicos por mintermino hasta cubrir todos los minterminos
+    while(numeroMinterminosExpresados<NUMERO_MINTERMINOS){
+        int rowMaxMinterminos=1, numMaxMinterminos=0;
+        
+        for(int i=1; i<tablaExpresionesFinales.size(); i++){
+            
+            int numMinterminosUnicos=0;
+
+            for(int j=0; j<tablaExpresionesFinales[0].size(); j++){
+                if(tablaExpresionesFinales[i][j]==1 && !minterminosExpresados[j]) numMinterminosUnicos++;
+            }
+            if(numMinterminosUnicos>numMaxMinterminos){
+                numMaxMinterminos=numMinterminosUnicos;
+                rowMaxMinterminos=i;
+            }
+        }
+
+        indicesMinterminosMinimos.push_back(rowMaxMinterminos-1);
+        numeroMinterminosExpresados+=actualizacionImpresionTabla(tablaExpresionesFinales, rowMaxMinterminos, minterminosExpresados, minterminosNoUsados);
+    }
+    return indicesMinterminosMinimos;
+}
+
+
+
+int actualizacionImpresionTabla(vector<vector<int>>&tablaExpresionesFinales, int row, vector<bool>&minterminosExpresados, vector<mintermino>&minterminosNoUsados){
+
+    int totalMinterminosExpresados=0;
+    // Recorrido de toda la fila, haciendo los descartes que serán expresados con un -1
+    for(int i=0; i<tablaExpresionesFinales[row].size(); i++){
+        
+        if(tablaExpresionesFinales[row][i]==1){
+            
+            minterminosExpresados[i]=true;
+            totalMinterminosExpresados++;
+            
+            //recorrido hacia arriba 
+            int pointer=row;
+            while(pointer>0){
+                tablaExpresionesFinales[pointer][i]=-1;
+                pointer--;
+            }
+            
+            //recorrido hacia abajo
+            pointer=row;
+            while(pointer<tablaExpresionesFinales.size()){
+                tablaExpresionesFinales[pointer][i]=-1;
+                pointer++;
+            }
+        }
+        tablaExpresionesFinales[row][i]=-1;
+    }
+
+    //impresion tabla
+    cout<<"\n====================================================================================================    \n\n    Simplificacion fila "<<row<<"\n"<<endl;
+    
+    //Construcción del encabezado de la tabla (imagen)
+    cout<<setw(4)<<left<<""<<setw(15)<<left<<"Mintermino";
+
+    for(int i=0; i<tablaExpresionesFinales[0].size(); i++){
+        cout<<setw(4)<<left<<tablaExpresionesFinales[0][i];
+    }
+
+    cout<<setw(18)<<left<<"Expresion booleana"<<endl;
+
+
+    for(int j=1; j<tablaExpresionesFinales.size(); j++){
+
+        string mparenthesis="m("+minterminosNoUsados[j-1].estructuraMintermino+")";
+        cout<<setw(4)<<left<<""<<setw(15)<<left<<mparenthesis;
+
+        for(int i=0; i<tablaExpresionesFinales[0].size(); i++){
+
+            //Impresion de los caracteres dependiendo su naturaleza
+            //1: Elemento con X
+            //0: Elemento vacio
+            //-1: Elemento descartado
+            if(tablaExpresionesFinales[j][i]==-1){
+                cout<<setw(4)<<left<<"#";
+            }else if(tablaExpresionesFinales[j][i]==0){
+                cout<<setw(4)<<left<<"";
+            }else{
+                cout<<setw(4)<<left<<"X";
+            }
+        }
+
+        cout<<setw(18)<<left<<minterminosNoUsados[j-1].expresionBooleana<<endl;
+    } 
+
+    return totalMinterminosExpresados;
 }
