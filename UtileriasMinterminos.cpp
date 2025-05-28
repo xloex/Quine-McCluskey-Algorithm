@@ -80,7 +80,7 @@ int formacionMinterminos(int MINTERMINO_MAXIMO, vector<int> &minterminos, vector
 
 int clasificacionMinterminos(int NUM_BITS, vector<vector<mintermino>>&clasificacionGlobalMinterminos){
 
-    int numCombinacion=1, totalColumns=0;
+    int totalColumns=0;
     bool hasElements=true;
 
     
@@ -120,6 +120,17 @@ int clasificacionMinterminos(int NUM_BITS, vector<vector<mintermino>>&clasificac
                         else if(posibleCombinacion[l]=='1') expresionBool.push_back((char)('z'-NUM_BITS+(l+1)));
                     }
         
+                    bool minterminoRepetido=false;
+                    for(mintermino minterms:clasificacionGlobalMinterminos[i+1]){
+                        if(minterms.formaBinaria==posibleCombinacion){
+                            clasificacionGlobalMinterminos[i][j].uso=true;
+                            clasificacionGlobalMinterminos[i][k].uso=true;
+                            minterminoRepetido=true;
+                        }
+                    }
+
+                    if(minterminoRepetido) continue;
+
                     //Llenado de datos en el dato de tipo mintermino con los datos recabados
                     minterminoCombinado.formaBinaria=posibleCombinacion;
                     minterminoCombinado.estructuraMintermino=clasificacionGlobalMinterminos[i][j].estructuraMintermino+","+clasificacionGlobalMinterminos[i][k].estructuraMintermino;
@@ -131,9 +142,7 @@ int clasificacionMinterminos(int NUM_BITS, vector<vector<mintermino>>&clasificac
                     //actualizacion de los estados de los minterminos usados
                     clasificacionGlobalMinterminos[i][j].uso=true;
                     clasificacionGlobalMinterminos[i][k].uso=true;
-                    // cout<<"m("<<mintermino1.estructuraMintermino<<","<<mintermino2.estructuraMintermino<<") "<<posibleCombinacion<<endl;
                 }
-                numCombinacion++;
             }
         }
     }
@@ -258,7 +267,7 @@ vector<int> simplificacionTablaFinal(vector<vector<int>>&tablaExpresionesFinales
     const int NUMERO_MINTERMINOS_FINALES=tablaExpresionesFinales.size();
     
     
-    stack<int> minterminosUnicos;
+    set<int> minterminosUnicos;
     //Descarte de los mintérminos únicos (solo son expresados por una expresion booleana)
     for(int i=0; i<NUMERO_MINTERMINOS; i++){
         
@@ -273,13 +282,13 @@ vector<int> simplificacionTablaFinal(vector<vector<int>>&tablaExpresionesFinales
         }
         
         if(numXsEnColumna==1){
-            minterminosUnicos.push(row);
+            minterminosUnicos.insert(row);
         }
     }
     
     while(!minterminosUnicos.empty()){
-        int row=minterminosUnicos.top();
-        minterminosUnicos.pop();
+        int row=*minterminosUnicos.begin();
+        minterminosUnicos.erase(row);
         
         //almacenaje de los indices con los mintérminos escenciales
         indicesMinterminosMinimos.push_back(row-1);
