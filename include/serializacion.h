@@ -10,12 +10,12 @@ std::vector<int> recibirArreglo(int* , int );
 
 
 // Serialización de vector<mintermino> a JSON
-string serializarMinterminosAJSON(const vector<mintermino>&) ;
+std::string serializarMinterminosAJSON(const std::vector<mintermino>&) ;
 
 // Serialización de matriz (vector<vector<int>>) a JSON
-string serializarMatrizAJSON(const vector<vector<int>>& );
+std::string serializarMatrizAJSON(const std::vector<std::vector<int>>& );
 
-string serializarArr1DAJSON(const vector<int>&);
+std::string serializarArr1DAJSON(const std::vector<int>&);
 
 
 

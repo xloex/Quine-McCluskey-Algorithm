@@ -65,7 +65,7 @@ void impresionTablaMinterminosFinal(std::vector<mintermino>&, std::vector<std::v
  * @param minterminosNoUsados Vector con los elementos que no se hayan combinado
  * @return Retorna una lista con los indices asociados a los mintérminos escenciales
  */
-std::vector<int> simplificacionTablaFinal(std::vector<std::vector<int>>&, const int, std::vector<mintermino>&);
+std::vector<int> simplificacionTablaFinal(std::vector<std::vector<int>>&, const int, std::vector<mintermino>&, std::string&);
 
 
 /**
@@ -76,5 +76,5 @@ std::vector<int> simplificacionTablaFinal(std::vector<std::vector<int>>&, const 
  * @param minterminosExpresados Vector que almacena los elementos ya procesados
  * @return Retorna el número de mintérminos que lograron ser expresados por la combinación
  */
-int actualizacionImpresionTabla(std::vector<std::vector<int>>&, int, std::vector<bool>&, std::vector<mintermino>&);
+int actualizacionImpresionTabla(std::vector<std::vector<int>>&, int, std::vector<bool>&, std::vector<mintermino>&, std::string& );
 #endif

@@ -10,6 +10,7 @@
 #include <bitset>
 #include "../include/UtileriasMinterminos.h"
 #include "../include/mintermino.h"
+#include "../include/serializacion.h"
 using namespace std;
 
 void imprimirTabla(vector<vector<int>>& tabla){
@@ -273,6 +274,11 @@ void impresionTablaMinterminosFinal(vector<mintermino> &minterminosNoUsados, vec
             }
         }
     }
+    string obj="", nombre = "\"Tabla inicial formacion de minterminos no utilizados\" ,";
+    obj += serializarMinterminosAJSON(minterminosNoUsados) + ",";
+    obj += serializarMatrizAJSON(tablaExpresionesFinales);
+
+    json += "[" + nombre + obj + "] ,";
     
     //imprimirTabla(tablaExpresionesFinales);
 }
@@ -280,7 +286,7 @@ void impresionTablaMinterminosFinal(vector<mintermino> &minterminosNoUsados, vec
 
 
 
-vector<int> simplificacionTablaFinal(vector<vector<int>>&tablaExpresionesFinales, const int NUMERO_MINTERMINOS, vector<mintermino>&minterminosNoUsados){
+vector<int> simplificacionTablaFinal(vector<vector<int>>&tablaExpresionesFinales, const int NUMERO_MINTERMINOS, vector<mintermino>&minterminosNoUsados, string& json){
     
     //Vector que nos indica los minterminos que aún no son expresados
     vector<bool> minterminosExpresados(NUMERO_MINTERMINOS, false);
@@ -315,7 +321,7 @@ vector<int> simplificacionTablaFinal(vector<vector<int>>&tablaExpresionesFinales
         //almacenaje de los indices con los mintérminos escenciales
         indicesMinterminosMinimos.push_back(row-1);
         //Impresion datos actualizada
-        numeroMinterminosExpresados+=actualizacionImpresionTabla(tablaExpresionesFinales, row, minterminosExpresados, minterminosNoUsados);
+        numeroMinterminosExpresados+=actualizacionImpresionTabla(tablaExpresionesFinales, row, minterminosExpresados, minterminosNoUsados, json);
         
         if(numeroMinterminosExpresados==NUMERO_MINTERMINOS){
             return indicesMinterminosMinimos;
@@ -341,14 +347,14 @@ vector<int> simplificacionTablaFinal(vector<vector<int>>&tablaExpresionesFinales
         }
 
         indicesMinterminosMinimos.push_back(rowMaxMinterminos-1);
-        numeroMinterminosExpresados+=actualizacionImpresionTabla(tablaExpresionesFinales, rowMaxMinterminos, minterminosExpresados, minterminosNoUsados);
+        numeroMinterminosExpresados+=actualizacionImpresionTabla(tablaExpresionesFinales, rowMaxMinterminos, minterminosExpresados, minterminosNoUsados, json);
     }
     return indicesMinterminosMinimos;
 }
 
 
 
-int actualizacionImpresionTabla(vector<vector<int>>&tablaExpresionesFinales, int row, vector<bool>&minterminosExpresados, vector<mintermino>&minterminosNoUsados){
+int actualizacionImpresionTabla(vector<vector<int>>&tablaExpresionesFinales, int row, vector<bool>&minterminosExpresados, vector<mintermino>&minterminosNoUsados, string& json){
 
     int totalMinterminosExpresados=0;
     // Recorrido de toda la fila, haciendo los descartes que serán expresados con un -1
@@ -412,5 +418,10 @@ int actualizacionImpresionTabla(vector<vector<int>>&tablaExpresionesFinales, int
         cout<<setw(18)<<left<<minterminosNoUsados[j-1].expresionBooleana<<endl;
     } 
     //imprimirTabla(tablaExpresionesFinales);
+    string obj="", nombre = "\"Simplificacion fila "+to_string(row)+"\",";
+    obj += serializarMinterminosAJSON(minterminosNoUsados) + ",";
+    obj += serializarMatrizAJSON(tablaExpresionesFinales);
+
+    json += "[" + nombre + obj + "] ,";
     return totalMinterminosExpresados;
 }

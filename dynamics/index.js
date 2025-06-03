@@ -86,10 +86,11 @@ var Module = {
       Module._free(ptrJson);
 
       // Parsear JSON para obtener el arreglo con 2 objetos
-      const [miniterms, matrix] = JSON.parse(jsonStr);
+      let obj = JSON.parse(jsonStr);
 
-      console.log("Vector<mintermino> recibido en JS:", miniterms);
-      console.log("Matriz recibida en JS:", matrix);
+      // console.log("Vector<mintermino> recibido en JS:", miniterms);
+      // console.log("Matriz recibida en JS:", matrix);
+      console.log(obj);
     });
   }
 };

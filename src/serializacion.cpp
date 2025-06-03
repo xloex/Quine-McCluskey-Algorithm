@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
-#include "UtileriasMinterminos.h"
+#include "../include/UtileriasMinterminos.h"
 #include "../include/serializacion.h"
 #include "../include/mintermino.h"
 

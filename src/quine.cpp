@@ -47,13 +47,13 @@ char* procesarDatos(int* arr, int size, int* outLength) {
     // mintermsGlobal = crearMinterminosDesdeVector(inputVec);
     // matrixGlobal = crearMatrizDesdeVector(inputVec);
 
-    string jsonMinterms = serializarMinterminosAJSON(minterminosNoUsados);
-    string jsonMatrix = serializarMatrizAJSON(tablaExpresionesFinales);
+    // string jsonMinterms = serializarMinterminosAJSON(minterminosNoUsados);
+    // string jsonMatrix = serializarMatrizAJSON(tablaExpresionesFinales);
 
     string jsonIndices = serializarArr1DAJSON(indices);
 
     // Crear arreglo JSON con dos objetos: [minterms, matrix]
-    string jsonFinal = "[" + jsonMinterms + "," + jsonMatrix + ", " + jsonIndices + "]";
+    string jsonFinal = "[" + json + jsonIndices + "]";
 
     if (outLength) *outLength = (int)jsonFinal.size();
 
@@ -109,7 +109,7 @@ void quine(){
     
 
     //Simplificación de la tabla final para obtener la expresión más simple
-    indices = simplificacionTablaFinal(tablaExpresionesFinales, NUMERO_MINTERMINOS, minterminosNoUsados);
+    indices = simplificacionTablaFinal(tablaExpresionesFinales, NUMERO_MINTERMINOS, minterminosNoUsados, json);
 
     //Impresion de la expresion booleana final
     cout<<"\n====================================================================================================    \n\n    Expresion booleana final:";
