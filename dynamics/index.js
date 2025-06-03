@@ -95,6 +95,49 @@ function construirTablas(data) {
     container.appendChild(card);
   }
 }
+function mostrarTerminoReducido(data) {
+  const container = document.querySelector('.container');
+  
+  // El último elemento del arreglo es un array de indices
+  const indices = data[data.length - 1];
+  
+  // El vector minterminos es el primer arreglo del último objeto tipo tabla
+  const ultimoObjetoTabla = data[data.length - 2]; // penúltimo porque el último son indices
+  
+  const minterminos = ultimoObjetoTabla[1]; // primer arreglo del objeto tabla (array de objetos minterminos)
+  
+  // Construir la expresión sumatoria igual que en el C++
+  let resultado = '';
+  for (let i = 0; i < indices.length; i++) {
+    const idx = indices[i];
+    resultado += minterminos[idx].expresionBooleana;
+    if (i !== indices.length - 1) {
+      resultado += ' + ';
+    }
+  }
+  
+  // Crear el div card que contendrá el resultado
+  const card = document.createElement('div');
+  card.className = 'card';
+  
+  // Crear el div mathExpression con el contenido actual de la expresión en la página
+  const mathDiv = document.createElement('div');
+  mathDiv.id = 'mathExpressionRes';
+  
+  // Obtener el contenido base actual para mantener la parte f(...) =
+  const baseExpr = document.querySelector('.equation-input #mathExpression').textContent;
+  
+  // Construimos el texto final
+  // El baseExpr es tipo: "f(w,x,y,z) = "
+  mathDiv.textContent = baseExpr + " "+resultado;
+  
+  card.appendChild(mathDiv);
+  container.appendChild(card);
+  
+  // Rerenderizar MathJax para que reconozca la fórmula nueva
+  MathJax.typesetPromise();
+}
+
 
 var Module = {
   onRuntimeInitialized(){
@@ -190,6 +233,7 @@ var Module = {
       // console.log("Matriz recibida en JS:", matrix);
       console.log(obj);
       construirTablas(obj);
+      mostrarTerminoReducido(obj);
     });
   }
 };

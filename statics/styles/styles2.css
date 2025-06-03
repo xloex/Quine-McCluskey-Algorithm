@@ -76,7 +76,7 @@ body {
 }
 /* --- */
 
-#mathExpression {
+#mathExpression, #mathExpressionRes{
     flex: 1 1 45%;
     font-size: 1.5rem;
     text-align: center;
@@ -87,7 +87,10 @@ body {
     height: 3em;
     align-content: center;
 }
-
+#mathExpressionRes:hover{
+    background-color: var(--color-highlight);
+    color: var(--color-text);
+}
 #inputMinterminos {
     background-color: var(--color-highlight);
     color: black;
