@@ -1,7 +1,25 @@
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <map>
+#include <iomanip>
+#include <set>
 #include "UtileriasMinterminos.h"
 #include "mintermino.h"
 using namespace std;
+
+void imprimirTabla(vector<vector<int>>& tabla){
+    cout << "///------------------///" << endl;
+    for(auto fila : tabla){
+        for(auto each : fila){
+            cout << each << " " ;
+        }
+        cout << endl;
+    }
+    cout << "///------------------///" << endl;
+}
 
 int lecturaMinterminos(int &NUMERO_MINTERMINOS, vector<int> &minterminos){
 
@@ -253,6 +271,7 @@ void impresionTablaMinterminosFinal(vector<mintermino> &minterminosNoUsados, vec
             }
         }
     } 
+    imprimirTabla(tablaExpresionesFinales);
 }
 
 
@@ -389,6 +408,6 @@ int actualizacionImpresionTabla(vector<vector<int>>&tablaExpresionesFinales, int
 
         cout<<setw(18)<<left<<minterminosNoUsados[j-1].expresionBooleana<<endl;
     } 
-
+    imprimirTabla(tablaExpresionesFinales);
     return totalMinterminosExpresados;
 }

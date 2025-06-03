@@ -5,6 +5,7 @@
 #include <string>
 #include "mintermino.h"
 
+void quine();
 /**
  * Funcion mediante la cual leemos los diferentes minterminos que se ingresen en el sistema.
  * @param NUMERO_MINTERMINOS Valor por referencia para almacenar el número total de minterminos
