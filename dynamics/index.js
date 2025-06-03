@@ -1,3 +1,101 @@
+function construirTablas(data) {
+  const container = document.querySelector('.container');
+  
+  // Vamos a iterar por cada "tabla" que viene en el JSON excepto la última posición que es un arreglo de indices
+  for (let i = 0; i < data.length - 1; i++) {
+    const [titulo, minterminos, matriz] = data[i];
+    
+    // Crear el div card para la tabla
+    const card = document.createElement('div');
+    card.className = 'card';
+    
+    // Título
+    const h3 = document.createElement('h3');
+    h3.textContent = titulo;
+    card.appendChild(h3);
+    
+    // Crear tabla HTML
+    const table = document.createElement('table');
+    table.style.width = '100%';
+    table.style.borderCollapse = 'collapse';
+    
+    // Crear encabezado de tabla
+    const thead = document.createElement('thead');
+    const trHead = document.createElement('tr');
+    
+    // Primera columna vacía para la cabecera de mintermino
+    let th = document.createElement('th');
+    th.textContent = 'Mintermino';
+    th.style.border = '1px solid black';
+    th.style.padding = '6px';
+    trHead.appendChild(th);
+    
+    // Segunda columna Expresión Booleana
+    th = document.createElement('th');
+    th.textContent = 'Expresión Booleana';
+    th.style.border = '1px solid black';
+    th.style.padding = '6px';
+    trHead.appendChild(th);
+    
+    // Las demás columnas son los valores de matriz[0] (que es el array de minterminos)
+    for (const val of matriz[0]) {
+      th = document.createElement('th');
+      th.textContent = val;
+      th.style.border = '1px solid black';
+      th.style.padding = '6px';
+      trHead.appendChild(th);
+    }
+    
+    thead.appendChild(trHead);
+    table.appendChild(thead);
+    
+    // Crear cuerpo de tabla
+    const tbody = document.createElement('tbody');
+    
+    // Por cada mintermino (cada fila)
+    for (let fila = 0; fila < minterminos.length; fila++) {
+      const tr = document.createElement('tr');
+      
+      // Columna Mintermino (estructuraMintermino)
+      let td = document.createElement('td');
+      td.textContent = minterminos[fila].estructuraMintermino;
+      td.style.border = '1px solid black';
+      td.style.padding = '6px';
+      tr.appendChild(td);
+      
+      // Columna ExpresionBooleana
+      td = document.createElement('td');
+      td.textContent = minterminos[fila].expresionBooleana;
+      td.style.border = '1px solid black';
+      td.style.padding = '6px';
+      tr.appendChild(td);
+      
+      // Las columnas siguientes son el valor en matriz (segundo array, tercero, etc.)
+      for (let col = 0; col < matriz[fila].length; col++) {
+        td = document.createElement('td');
+        const val = matriz[fila+1][col];
+        let displayChar = '';
+        if (val === 0) displayChar = ' ';
+        else if (val === 1) displayChar = 'X';
+        else if (val === -1) displayChar = '#';
+        td.textContent = displayChar;
+        
+        td.style.border = '1px solid black';
+        td.style.padding = '6px';
+        td.className = `cell-${displayChar === ' ' ? 'blank' : displayChar === 'X' ? 'x' : 'hash'}`;
+        tr.appendChild(td);
+      }
+      
+      tbody.appendChild(tr);
+    }
+    
+    table.appendChild(tbody);
+    card.appendChild(table);
+    
+    container.appendChild(card);
+  }
+}
+
 var Module = {
   onRuntimeInitialized(){
     const variablesBase = (() => { 
@@ -91,6 +189,7 @@ var Module = {
       // console.log("Vector<mintermino> recibido en JS:", miniterms);
       // console.log("Matriz recibida en JS:", matrix);
       console.log(obj);
+      construirTablas(obj);
     });
   }
 };

@@ -57,6 +57,25 @@ body {
     gap: 1rem;
 }
 
+/* TABLAS */
+.cell-blank {
+  background-color: white;
+  color: black;
+}
+
+.cell-x {
+  background-color: #AD343E; /* rojo fuerte */
+  color: white;
+  font-weight: bold;
+}
+
+.cell-hash {
+  background-color: #3F5093; /* azul oscuro */
+  color: white;
+  font-weight: bold;
+}
+/* --- */
+
 #mathExpression {
     flex: 1 1 45%;
     font-size: 1.5rem;
