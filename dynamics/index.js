@@ -1,5 +1,9 @@
+let minterms = [];
+let flag = false;
+
+
 function construirTablas(data) {
-  const container = document.querySelector('.container');
+  const container = document.getElementById('resultado');
   
   // Vamos a iterar por cada "tabla" que viene en el JSON excepto la última posición que es un arreglo de indices
   for (let i = 0; i < data.length - 1; i++) {
@@ -96,7 +100,7 @@ function construirTablas(data) {
   }
 }
 function mostrarTerminoReducido(data) {
-  const container = document.querySelector('.container');
+  const container = document.getElementById('resultado');
   
   // El último elemento del arreglo es un array de indices
   const indices = data[data.length - 1];
@@ -150,8 +154,6 @@ var Module = {
     })();
     console.log(variablesBase);
 
-    let minterms = [];
-    let flag = false;
     
   
     document.getElementById('inputMinterminos').addEventListener('input', () => {
@@ -188,17 +190,34 @@ var Module = {
       mathDiv.textContent = expr;
       MathJax.typesetPromise();
     });
+    const resultado = document.getElementById('resultado');
+    const btnGenNue = document.getElementById("btnGenNuevo");
+    const textArea = document.getElementById("inputMinterminos");
 
-
+    btnGenNue.addEventListener("click", () => {
+      resultado.innerHTML = "";
+      minterms = [];
+      flag = false;
+      btnGenNue.style.display = "none";
+    });
     document.getElementById("btnEnviar").addEventListener("click", () =>{
       if(!flag) return;
       
       console.log(minterms);
+      resultado.innerHTML = "";
+      flag = false;
+      btnGenNue.style.display = "inline-block";
+
+
       const size = minterms.length;
 
       // Reservar memoria y copiar datos a WASM
       const ptrInput = Module._malloc(size * 4);
       Module.HEAP32.set(minterms, ptrInput / 4);
+
+
+      minterms = [];
+      textArea.value = "";
 
       // Reservar memoria para tamaño del JSON resultante
       const ptrLength = Module._malloc(4);

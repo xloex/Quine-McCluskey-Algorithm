@@ -20,6 +20,9 @@ body {
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     padding: 2rem;
     max-width: 90vw;
@@ -46,6 +49,7 @@ body {
     padding: 2rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     margin-top: 1rem;
+    min-width: 50em;
 }
 
 .equation-input {
@@ -102,7 +106,7 @@ body {
     resize: vertical;
 }
 
-#btnEnviar {
+#btnEnviar, #btnGenNuevo {
     margin-top: 1.5rem;
     background-color: var(--color-text);
     color: white;
