@@ -193,20 +193,26 @@ var Module = {
     const resultado = document.getElementById('resultado');
     const btnGenNue = document.getElementById("btnGenNuevo");
     const textArea = document.getElementById("inputMinterminos");
+    const btnEnviar = document.getElementById("btnEnviar");
+    
+    textArea.value = "";
 
     btnGenNue.addEventListener("click", () => {
       resultado.innerHTML = "";
+      textArea.value = "";
       minterms = [];
       flag = false;
       btnGenNue.style.display = "none";
+      btnEnviar.style.display = "inline-block";
     });
-    document.getElementById("btnEnviar").addEventListener("click", () =>{
+    btnEnviar.addEventListener("click", () =>{
       if(!flag) return;
       
       console.log(minterms);
       resultado.innerHTML = "";
       flag = false;
       btnGenNue.style.display = "inline-block";
+      btnEnviar.style.display = 'none';
 
 
       const size = minterms.length;
