@@ -1,5 +1,4 @@
-Module.onRuntimeInitialized = () => {
-  const inputArray = [0, 1, 5, 21, 85];
+function quine(inputArray){
   const size = inputArray.length;
 
   // Reservar memoria y copiar datos a WASM
@@ -37,4 +36,31 @@ Module.onRuntimeInitialized = () => {
 
   console.log("Vector<mintermino> recibido en JS:", minterms);
   console.log("Matriz recibida en JS:", matrix);
+}
+
+Module.onRuntimeInitialized = () => {
+  document.getElementById('btnEnviar').addEventListener('click', () => {
+    const rawInput = document.getElementById('inputMinterminos').value.trim();
+    if (!rawInput) {
+        document.getElementById('errorMsg').textContent = "Por favor ingresa al menos un mintermino.";
+        return;
+    }
+    // Separar por espacios o comas
+    const tokens = rawInput.split(/[\s,]+/);
+    const minterms = [];
+    for (let token of tokens) {
+        if (!/^\d+$/.test(token)) {
+            document.getElementById('errorMsg').textContent = `Error: "${token}" no es un número entero válido.`;
+            return;
+        }
+        minterms.push(parseInt(token, 10));
+    }
+    document.getElementById('errorMsg').textContent = "";
+
+    // Aquí pasamos el arreglo 'minterms' al WebAssembly
+    console.log('Minterminos válidos:', minterms);
+    quine(minterms);
+  });
+  
+  
 };

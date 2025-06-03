@@ -4,8 +4,10 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <unordered_map>
 #include <iomanip>
 #include <set>
+#include <bitset>
 #include "UtileriasMinterminos.h"
 #include "mintermino.h"
 using namespace std;
@@ -271,7 +273,7 @@ void impresionTablaMinterminosFinal(vector<mintermino> &minterminosNoUsados, vec
             }
         }
     } 
-    imprimirTabla(tablaExpresionesFinales);
+    //imprimirTabla(tablaExpresionesFinales);
 }
 
 
@@ -408,6 +410,6 @@ int actualizacionImpresionTabla(vector<vector<int>>&tablaExpresionesFinales, int
 
         cout<<setw(18)<<left<<minterminosNoUsados[j-1].expresionBooleana<<endl;
     } 
-    imprimirTabla(tablaExpresionesFinales);
+    //imprimirTabla(tablaExpresionesFinales);
     return totalMinterminosExpresados;
 }
