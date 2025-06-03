@@ -67,6 +67,7 @@ char* procesarDatos(int* arr, int size, int* outLength) {
 
 
 void quine(){
+    json="";
     /**
      *Vector que almacena la clasificación de los mintérminos, en la primera pocision es el número de bits encendidos que tiene el mintermino
      *el par exterior en su primera posicion tiene otro par con la información del número en bits y en la segunda pocision tenemos el número 
