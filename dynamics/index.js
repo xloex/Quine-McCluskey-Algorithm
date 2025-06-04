@@ -133,7 +133,7 @@ function mostrarTerminoReducido(data) {
   
   // Construimos el texto final
   // El baseExpr es tipo: "f(w,x,y,z) = "
-  mathDiv.textContent = baseExpr + " "+resultado;
+  mathDiv.textContent = "\\( " + baseExpr + " "+resultado + " \\)";
   
   card.appendChild(mathDiv);
   container.appendChild(card);
