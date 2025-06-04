@@ -1,14 +1,15 @@
 #include <bits/stdc++.h>
 #include <iomanip>
-#include "UtileriasMinterminos.h"
-#include "mintermino.h"
+#include "../include/UtileriasMinterminos.h"
+#include "../include/mintermino.h"
+#include "../include/serializacion.h"
 
 using namespace std;
 typedef long long ll;
 
 // g++ main.cpp UtileriasMinterminos.cpp -o programa
 // ./programa
-
+string s="";
 int main() {
 
     /**
@@ -38,11 +39,11 @@ int main() {
     vector<vector<int>> tablaExpresionesFinales(NUM_MINTERMINOS_FINAL+1, vector<int>(NUMERO_MINTERMINOS));    //1 representa una X, 0 representa un espacio vacio
 
     //Impresion de la tabla final
-    impresionTablaMinterminosFinal(minterminosNoUsados, tablaExpresionesFinales, minterminos);
+    impresionTablaMinterminosFinal(minterminosNoUsados, tablaExpresionesFinales, minterminos, s);
     
 
     //Simplificación de la tabla final para obtener la expresión más simple
-    vector<int> indices = simplificacionTablaFinal(tablaExpresionesFinales, NUMERO_MINTERMINOS, minterminosNoUsados);
+    vector<int> indices = simplificacionTablaFinal(tablaExpresionesFinales, NUMERO_MINTERMINOS, minterminosNoUsados, s);
 
     //Impresion de la expresion booleana final
     cout<<"\n====================================================================================================    \n\n    Expresion booleana final:";
