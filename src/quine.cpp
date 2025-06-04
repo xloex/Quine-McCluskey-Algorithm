@@ -6,8 +6,9 @@
 #include <sstream>
 #include <cstring>
 #include <iomanip>
-#include "UtileriasMinterminos.h"
-#include "mintermino.h"
+#include "../include/UtileriasMinterminos.h"
+#include "../include/mintermino.h"
+#include "../include/serializacion.h"
 
 using namespace std;
 typedef long long ll;
@@ -18,47 +19,6 @@ vector<mintermino> minterminosNoUsados;
 vector<vector<int>> tablaExpresionesFinales;
 vector<int> indices;
 
-
-// Función para convertir vector<int> plano recibido a vector<int>
-vector<int> recibirArreglo(int* arr, int size) {
-    if (arr == nullptr || size <= 0) return {};
-    return vector<int>(arr, arr + size);
-}
-
-
-// Serialización de vector<mintermino> a JSON
-string serializarMinterminosAJSON(const vector<mintermino>& minterms) {
-    ostringstream oss;
-    oss << "[";
-    for (size_t i = 0; i < minterms.size(); ++i) {
-        oss << "{";
-        oss << "\"formaBinaria\":\"" << minterms[i].formaBinaria << "\",";
-        oss << "\"estructuraMintermino\":\"" << minterms[i].estructuraMintermino << "\",";
-        oss << "\"expresionBooleana\":\"" << minterms[i].expresionBooleana << "\",";
-        oss << "\"uso\":" << (minterms[i].uso ? "true" : "false");
-        oss << "}";
-        if (i != minterms.size() - 1) oss << ",";
-    }
-    oss << "]";
-    return oss.str();
-}
-
-// Serialización de matriz (vector<vector<int>>) a JSON
-string serializarMatrizAJSON(const vector<vector<int>>& matrix) {
-    ostringstream oss;
-    oss << "[";
-    for (size_t i = 0; i < matrix.size(); ++i) {
-        oss << "[";
-        for (size_t j = 0; j < matrix[i].size(); ++j) {
-            oss << matrix[i][j];
-            if (j != matrix[i].size() - 1) oss << ",";
-        }
-        oss << "]";
-        if (i != matrix.size() - 1) oss << ",";
-    }
-    oss << "]";
-    return oss.str();
-}
 
 
 extern "C" {
@@ -80,18 +40,20 @@ char* copiarStringAHeap(const char* inputStr, int length) {
  * outLength recibe el tamaño del JSON total.
  */
 
-
+string json="";
 char* procesarDatos(int* arr, int size, int* outLength) {
     minterminos = recibirArreglo(arr, size);
     quine();
     // mintermsGlobal = crearMinterminosDesdeVector(inputVec);
     // matrixGlobal = crearMatrizDesdeVector(inputVec);
 
-    string jsonMinterms = serializarMinterminosAJSON(minterminosNoUsados);
-    string jsonMatrix = serializarMatrizAJSON(tablaExpresionesFinales);
+    // string jsonMinterms = serializarMinterminosAJSON(minterminosNoUsados);
+    // string jsonMatrix = serializarMatrizAJSON(tablaExpresionesFinales);
+
+    string jsonIndices = serializarArr1DAJSON(indices);
 
     // Crear arreglo JSON con dos objetos: [minterms, matrix]
-    string jsonFinal = "[" + jsonMinterms + "," + jsonMatrix + "]";
+    string jsonFinal = "[" + json + jsonIndices + "]";
 
     if (outLength) *outLength = (int)jsonFinal.size();
 
@@ -105,6 +67,7 @@ char* procesarDatos(int* arr, int size, int* outLength) {
 
 
 void quine(){
+    json="";
     /**
      *Vector que almacena la clasificación de los mintérminos, en la primera pocision es el número de bits encendidos que tiene el mintermino
      *el par exterior en su primera posicion tiene otro par con la información del número en bits y en la segunda pocision tenemos el número 
@@ -143,11 +106,11 @@ void quine(){
     tablaExpresionesFinales.assign(NUM_MINTERMINOS_FINAL+1, vector<int>(NUMERO_MINTERMINOS));    //1 representa una X, 0 representa un espacio vacio
 
     //Impresion de la tabla final
-    impresionTablaMinterminosFinal(minterminosNoUsados, tablaExpresionesFinales, minterminos);
+    impresionTablaMinterminosFinal(minterminosNoUsados, tablaExpresionesFinales, minterminos, json);
     
 
     //Simplificación de la tabla final para obtener la expresión más simple
-    indices = simplificacionTablaFinal(tablaExpresionesFinales, NUMERO_MINTERMINOS, minterminosNoUsados);
+    indices = simplificacionTablaFinal(tablaExpresionesFinales, NUMERO_MINTERMINOS, minterminosNoUsados, json);
 
     //Impresion de la expresion booleana final
     cout<<"\n====================================================================================================    \n\n    Expresion booleana final:";

@@ -4,21 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quine-McCluskey</title>
-    <script src="./quine.js"></script>
-    <script src="./index.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Goldman:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- <link rel="stylesheet" href="statics/styles/styles.css"> -->
+    <link rel="stylesheet" href="statics/styles/styles2.css">
+
+    <!-- MathJax -->
+  <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 </head>
 <body>
-    <div></div>
-    <div>
-        <div>
-            Quine-McCluskey
+    <div class="container">
+        <div class="subtitle">Calculadora</div>
+        <div class="title">Quine-McCluskey</div>
+
+        <div class="card">
+        <h3>Ingrese los minterminos separados por espacio o coma</h3>
+        <div class="equation-input">
+            <div id="mathExpression">\( f() = \)</div>
+            <textarea id="inputMinterminos" rows="4" placeholder="Ejemplo: 5 7 9 12 13 15"></textarea>
         </div>
-        <div>
-            <h2>Ingrese los minterminos separados por espacio o coma</h2>
-            <textarea id="inputMinterminos" rows="4" cols="50" placeholder="Ejemplo: 5 7 9 12 13 15"></textarea><br><br>
-            <button id="btnEnviar">Aceptar</button>
-            <div id="errorMsg" style="color:red;"></div>
+        <div id="btnEnviar">Aceptar</div>
+        <div id="btnGenNuevo" style="display: none">Generar Nuevo</div>
+        </div>
+        <div id="resultado">
         </div>
     </div>
+    
+
+    <!-- Mis scrpits -->
+    <script src="./dynamics/index.js"></script>
+    <script src="./build/quine.js"></script>
 </body>
 </html>

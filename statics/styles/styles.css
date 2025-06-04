@@ -1,0 +1,139 @@
+.goldman-regular {
+  font-family: "Goldman", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.goldman-bold {
+  font-family: "Goldman", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Goldman', sans-serif;
+}
+
+body {
+    /* background: linear-gradient(to bottom right, #F6F4F3, #F2AF29); */
+    background: linear-gradient(to bottom right, #F2AF29, #AD343E);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000000;
+}
+
+.container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 40px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 600em;
+    width: 90%;
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+.title {
+    /* padding: 10px 30px; */
+    border-radius: 25px;
+    /* color: white; */
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+
+
+.subtitle {
+    font-size: 5em;
+    color: #000d81;
+}
+.title:hover .subtitle:hover {
+    transform: scale(1.05);
+}
+
+h3 {
+    text-align: center;
+    font-family: 'geist-mono';
+}
+
+textarea {
+    border-radius: 15px;
+    border: 2px solid #000d81;
+    padding: 10px;
+    width: 100%;
+    resize: none;
+    font-size: 16px;
+}
+
+/* Para la expresión matemática */
+.equation-input {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+#mathExpression {
+  font-size: 22px;
+  color: #000d81;
+}
+
+
+
+#btnEnviar {
+    background-color: #000d81;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 25px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    user-select: none;
+}
+
+#btnEnviar:hover {
+    background-color: #AD343E;
+    transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+    0% {
+    opacity: 0;
+    transform: translateY(50px);
+    }
+    100% {
+    opacity: 1;
+    transform: translateY(0);
+    }
+}
+
+
+.centrado{
+    align-items: center;
+    align-self: center;
+    align-content: center;
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+
+#contenido-principal
