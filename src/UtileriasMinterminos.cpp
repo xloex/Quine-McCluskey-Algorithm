@@ -177,24 +177,34 @@ vector<mintermino> impresionTablaMinterminosTotales(int NUMERO_COLUMNAS, int NUM
     //construccion de la tabla, los datos de los if dependen del numero de datos, a su vez, almacenando los 
     //elementos que no hayan sido usados durante las combinaciones mediante una pila
     vector<mintermino> minterminosNoUsados;
-    bool element;
+    bool element, elementBefore=true;
 
     cout<<"\n====================================================================================================\n\n    Tabla de combinaciones\n"<<endl;
     for(int i=0; i<50; i++){
         
         element=false;
 
-        for(int j=0; j<50; j++){
+        for(int j=0; j<NUMERO_COLUMNAS; j++){
             if(i==0){
                 if(j==0) cout<<setw(4)<<left<<""<<setw(20+NUM_BITS)<<left<<"Minterminos";
                 else if(!clasificacionGlobalMinterminos[j].empty()){string combinacionN="Combinacion "+to_string(j); cout<<setw(20+NUM_BITS)<<left<<combinacionN;}
                 continue;
             }
             if(clasificacionGlobalMinterminos[j].empty()) break;
-            if(i-1>=clasificacionGlobalMinterminos[j].size()) continue;
+
+            
+            if(i-1>=clasificacionGlobalMinterminos[j].size()){
+                if(elementBefore){
+                    if(j==0){
+                        cout<<setw(4)<<left<<"";
+                    }
+                    cout<<setw(20+NUM_BITS)<<left<<"";
+                }
+                continue;
+            }
 
             if(j==0) cout<<setw(4)<<left<<"";
-
+            
             mintermino minterm=clasificacionGlobalMinterminos[j][i-1];
             string mparenthesis="";
             element=true;
@@ -206,6 +216,7 @@ vector<mintermino> impresionTablaMinterminosTotales(int NUMERO_COLUMNAS, int NUM
             
         }
         if(element || i==0) cout<<endl;
+        elementBefore=element;
     }
     cout<<"\n    * : Elementos no utilizados durante las combinaciones\n\n===================================================================================================="<<endl;
     return minterminosNoUsados;
